@@ -4,7 +4,6 @@ def Mix(ch1, ch2):
     return (ch1 * 26) + ch2
 
 def shortPalindrome(s):
-    mod = 1000000007
     freq = Counter()
     cfreq = Counter()
     pairfreq = Counter()
@@ -12,15 +11,13 @@ def shortPalindrome(s):
 
     for ch in s:
         v = ord(ch) - ord('a')
-        ans = (ans + cfreq[v]) % mod
+        ans += cfreq[v]
         for nc in range(26):
-            cfreq[nc] = (cfreq[nc] + pairfreq[Mix(nc, v)]) % mod
-        for nc in range(26):
-            idx = Mix(nc, v)
-            pairfreq[idx] = (pairfreq[idx] + freq[nc]) % mod
+            cfreq[nc] += pairfreq[Mix(nc, v)]
+            pairfreq[Mix(nc, v)] += freq[nc]
         freq[v] += 1
 
-    return ans
+    return ans % 1000000007
 
 
 print(shortPalindrome("kkkkkkkz"))
